@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Car : MonoBehaviour
 {
-    public Camera followingCamera;
-    private Quaternion _cameraRot;
-    private Vector3 _cameraPos;
-
     public Transform centerOfMass;
 
     public float motorTorque =  300f;
@@ -35,9 +31,6 @@ public class Car : MonoBehaviour
         wheels = GetComponentsInChildren<Wheel>();
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.centerOfMass = centerOfMass.localPosition;
-
-        _cameraRot = followingCamera.transform.rotation;
-        _cameraPos = followingCamera.transform.localPosition;
 
         ackeackermannPositiveKoef = Mathf.Rad2Deg * Mathf.Atan(wheelBase / (turnRadius + halfTrack));
         ackeackermannNegativeKoef = Mathf.Rad2Deg * Mathf.Atan(wheelBase / (turnRadius - halfTrack));
@@ -76,10 +69,5 @@ public class Car : MonoBehaviour
 
     private void Update()
     {
-        var pos = Vector3.zero;
-        var rot = Quaternion.identity;
-
-        followingCamera.transform.rotation = _cameraRot;
-        followingCamera.transform.position = gameObject.transform.position + _cameraPos;
     }
 }
