@@ -8,6 +8,8 @@ public class FolowingCameraController : MonoBehaviour
     public float distanceToObject = 10;
     public float heightAboveObject = 3.5f;
 
+    public float cameraDistancePointHeight = 2.5f;
+
     public Camera followingCamera;
 
     void Start()
@@ -24,6 +26,7 @@ public class FolowingCameraController : MonoBehaviour
     private void UpdateCameraRotation()
     {
         var gameObjectPos = gameObject.transform.position;
+        gameObjectPos.y += cameraDistancePointHeight;
         var cameraPos = followingCamera.transform.position;
 
         var gameObjectToCameraVector = gameObjectPos - cameraPos;
