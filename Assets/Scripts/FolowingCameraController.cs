@@ -46,7 +46,15 @@ public class FolowingCameraController : MonoBehaviour
         var gameObjectToCameraVector = gameObjectPos - cameraPos;
         var curDistance = gameObjectToCameraVector.magnitude;
 
-        var followingCameraPosition = followingCamera.transform.position + gameObjectToCameraVector.normalized * (curDistance - distanceToObject);
+        float distanceDelta = curDistance - distanceToObject;
+
+        var followingCameraPosition = followingCamera.transform.position;
+
+        if (distanceDelta > 0)
+        {
+            followingCameraPosition = followingCamera.transform.position + gameObjectToCameraVector.normalized * (distanceDelta);
+        }
+
         followingCameraPosition.y = gameObject.transform.position.y + heightAboveObject;
 
         followingCamera.transform.position = followingCameraPosition;
