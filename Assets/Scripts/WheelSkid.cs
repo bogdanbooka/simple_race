@@ -58,7 +58,7 @@ public class WheelSkid : MonoBehaviour
 
 
 				float intensity = Mathf.Clamp01(skidTotal / MAX_SKID_INTENSITY);
-				Debug.Log($"[skidTotal = {skidTotal}] [intensity {intensity}]");
+				//Debug.Log($"[skidTotal = {skidTotal}] [intensity {intensity}]");
 				
 				// Account for further movement since the last FixedUpdate
 				Vector3 skidPoint = wheelHitInfo.point + (rb.velocity * (Time.time - lastFixedUpdateTime));
