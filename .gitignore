@@ -4,3 +4,5 @@
 Library/
 Temp/
 obj/
+*.blend1
+3DSrc/Examples/
