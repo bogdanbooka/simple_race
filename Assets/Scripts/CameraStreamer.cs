@@ -45,12 +45,15 @@ public class StreamingService : WebSocketBehavior
 
 public class CameraStreamer : MonoBehaviour
 {
-    public Camera camera;
-
     public WebsocketService wsService;
 
     private CapturedFrame frame;
 
+    private RenderTexture rt = null;
+
+    private Texture2D texture = null;
+
+    private Rect rect;
 
     void Start()
     {
@@ -62,28 +65,25 @@ public class CameraStreamer : MonoBehaviour
         wsService.AddWebSocketService<StreamingService>("/screen_streaming", (service) => service.frame = frame);
     }
 
-    private void LateUpdate()
+    private void OnPostRender()
     {
-        StartCoroutine(TakeScreenShot());
+        if (RenderTexture.active == null) 
+        {
+            return;
+        }
+
+        if (rt == null) 
+        {
+            rt = RenderTexture.active;
+
+            texture = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
+
+            rect = new Rect(0, 0, rt.width, rt.height);
+        }
+
+        texture.ReadPixels(rect, 0, 0, false);
+        texture.Apply();
+
+        frame.encodedData = Convert.ToBase64String(texture.EncodeToPNG());
     }
-
-    public IEnumerator TakeScreenShot()
-    {
-        yield return new WaitForEndOfFrame();
-
-        int width = Screen.width;
-        int height = Screen.height;
-        var tex = new Texture2D(width, height, TextureFormat.RGB24, false);
-
-        // Read screen contents into the texture
-        tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-        tex.Apply();
-
-        // Encode texture into PNG
-        byte[] bytes = tex.EncodeToPNG();
-        Destroy(tex);
-
-        frame.encodedData = Convert.ToBase64String(bytes);
-    }
-
  }
