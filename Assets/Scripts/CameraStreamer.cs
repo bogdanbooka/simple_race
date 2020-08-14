@@ -50,10 +50,13 @@ public class CameraStreamer : MonoBehaviour
     private CapturedFrame frame;
 
     private RenderTexture rt = null;
+    private RenderTexture tmprt = null;
 
     private Texture2D texture = null;
 
     private Rect rect;
+
+    public Camera camera;
 
     void Start()
     {
@@ -63,27 +66,36 @@ public class CameraStreamer : MonoBehaviour
         };
 
         wsService.AddWebSocketService<StreamingService>("/screen_streaming", (service) => service.frame = frame);
+
+        rt = camera.targetTexture;
+
+        texture = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
+
+        rect = new Rect(0, 0, rt.width, rt.height);
     }
 
-    private void OnPostRender()
+    private void LateUpdate()
     {
-        if (RenderTexture.active == null) 
-        {
-            return;
-        }
+        StartCoroutine(TakeScreenShot());
+    }
 
-        if (rt == null) 
-        {
-            rt = RenderTexture.active;
+    public IEnumerator TakeScreenShot()
+    {
+        yield return new WaitForEndOfFrame();
 
-            texture = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
+        tmprt = RenderTexture.active;
+        RenderTexture.active = camera.targetTexture;
+        camera.Render();
 
-            rect = new Rect(0, 0, rt.width, rt.height);
-        }
-
-        texture.ReadPixels(rect, 0, 0, false);
+        // Read screen contents into the texture
+        texture.ReadPixels(rect, 0, 0);
         texture.Apply();
 
-        frame.encodedData = Convert.ToBase64String(texture.EncodeToPNG());
+        RenderTexture.active = tmprt;
+
+        // Encode texture into PNG
+        byte[] bytes = texture.EncodeToPNG();
+
+        frame.encodedData = Convert.ToBase64String(bytes);
     }
  }
