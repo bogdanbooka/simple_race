@@ -49,8 +49,9 @@ public class CameraStreamer : MonoBehaviour
 
     private CapturedFrame frame;
 
-    private RenderTexture rt = null;
+    public RenderTexture rt;
     private RenderTexture tmprt = null;
+    private RenderTexture camtmprt = null;
 
     private Texture2D texture = null;
 
@@ -67,8 +68,6 @@ public class CameraStreamer : MonoBehaviour
 
         wsService.AddWebSocketService<StreamingService>("/screen_streaming", (service) => service.frame = frame);
 
-        rt = camera.targetTexture;
-
         texture = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
 
         rect = new Rect(0, 0, rt.width, rt.height);
@@ -84,7 +83,10 @@ public class CameraStreamer : MonoBehaviour
         yield return new WaitForEndOfFrame();
 
         tmprt = RenderTexture.active;
-        RenderTexture.active = camera.targetTexture;
+        camtmprt = camera.targetTexture;
+        camera.targetTexture = rt;
+        RenderTexture.active = rt;
+
         camera.Render();
 
         // Read screen contents into the texture
@@ -92,6 +94,7 @@ public class CameraStreamer : MonoBehaviour
         texture.Apply();
 
         RenderTexture.active = tmprt;
+        camera.targetTexture = camtmprt;
 
         // Encode texture into PNG
         byte[] bytes = texture.EncodeToPNG();
