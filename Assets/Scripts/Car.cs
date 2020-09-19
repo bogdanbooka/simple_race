@@ -50,14 +50,27 @@ public class Car : MonoBehaviour
     private float ackeackermannLeft;
     private float ackeackermannRight;
 
+    private Quaternion _initialRotation;
+    private Vector3 _initialPostion;
+
     private void Start()
     {
         wheels = GetComponentsInChildren<Wheel>();
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.centerOfMass = centerOfMass.localPosition;
 
+        _initialRotation = gameObject.transform.rotation;
+        _initialPostion = gameObject.transform.position;
+
         ackeackermannPositiveKoef = Mathf.Rad2Deg * Mathf.Atan(wheelBase / (turnRadius + halfTrack));
         ackeackermannNegativeKoef = Mathf.Rad2Deg * Mathf.Atan(wheelBase / (turnRadius - halfTrack));
+    }
+
+    public void ResetCar()
+    {
+        gameObject.transform.rotation = _initialRotation;
+        gameObject.transform.position = _initialPostion;
+        _rigidbody.velocity = new Vector3();
     }
 
     private void FixedUpdate()
