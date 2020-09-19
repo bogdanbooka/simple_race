@@ -12,6 +12,8 @@ public class Wheel : MonoBehaviour
     public float SteerAngle { get; set; }
     public float Torque { get; set; }
 
+    public bool Brake { get; set; }
+
     private WheelCollider wheelCollider;
     private Transform wheelTransform;
 
@@ -43,5 +45,7 @@ public class Wheel : MonoBehaviour
         {
             wheelCollider.motorTorque = Torque;
         }
+
+        wheelCollider.brakeTorque = Brake ? 500 : 0;
     }
 }
