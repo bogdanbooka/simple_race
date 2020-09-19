@@ -100,13 +100,28 @@ public class Car : MonoBehaviour
             ackeackermannRight = 0f;
         }
 
-        float appliedTorque = Throttle * motorTorque * _transmissionRatios[_currentGear];
+        float appliedTorque = Throttle * motorTorque * CurrentGearRatio();
         print($" {_currentGear}, {_logn_speed}, {appliedTorque}");
 
-        if ( Mathf.Sign(appliedTorque) * Mathf.Sign(_logn_speed) < 0)
+        if (Mathf.Sign(appliedTorque) * Mathf.Sign(_logn_speed) < 0)
         {
-            Throttle = 0;
-            Brake = true;
+            //deceleration
+
+            if (Mathf.Abs(_logn_speed) > 15)
+            {
+                Throttle = 0;
+                appliedTorque = 0;
+                Brake = true;
+            }
+        }
+        else if (appliedTorque < 0)
+        {
+            //check rear speed
+            //if it more than 40 km/h reduce torque to 0
+            if (Mathf.Abs(_logn_speed) > 40) 
+            {
+                appliedTorque = 0;
+            }
         }
 
         foreach (var wheel in wheels) 
@@ -133,6 +148,11 @@ public class Car : MonoBehaviour
             gear = 3;
 
         return gear;
+    }
+
+    private float CurrentGearRatio()
+    {
+        return _transmissionRatios[_currentGear];
     }
 
     private void Update()
