@@ -11,6 +11,8 @@ public class InputController : MonoBehaviour
     public float ThrottleInput { get; private set; }
     public float SteerInput { get; private set; }
 
+    public bool ParkingBrake { get; private set; }
+
 
 
     // Update is called once per frame
@@ -18,5 +20,7 @@ public class InputController : MonoBehaviour
     {
         SteerInput = Input.GetAxis(inputSteerAxis);
         ThrottleInput = Input.GetAxis(inputThrottleAxis);
+
+        ParkingBrake = Input.GetKey(KeyCode.Space);
     }
 }
