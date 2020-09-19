@@ -9,7 +9,7 @@ public class Car : MonoBehaviour
 
     public float motorTorque = 80f;
 
-    float[] _transmissionRatios = new float[] { 3.5f, 4, 2, 1.2f, 0.9f };
+    static float[] _transmissionRatios = new float[] { 4, 2, 1.2f, 0.9f, 0.0f };
 
     int _currentGear = 0;
 
@@ -100,13 +100,12 @@ public class Car : MonoBehaviour
             ackeackermannRight = 0f;
         }
 
-        float appliedTorque = Throttle * motorTorque * CurrentGearRatio();
-        print($" {_currentGear}, {_logn_speed}, {appliedTorque}");
+        float appliedTorque = Throttle * motorTorque * GearRatio(_currentGear);
+        
 
-        if (Mathf.Sign(appliedTorque) * Mathf.Sign(_logn_speed) < 0)
+        if (Mathf.Sign(Throttle) * Mathf.Sign(_logn_speed) < 0)
         {
             //deceleration
-
             if (Mathf.Abs(_logn_speed) > 15)
             {
                 Throttle = 0;
@@ -114,15 +113,9 @@ public class Car : MonoBehaviour
                 Brake = true;
             }
         }
-        else if (appliedTorque < 0)
-        {
-            //check rear speed
-            //if it more than 40 km/h reduce torque to 0
-            if (Mathf.Abs(_logn_speed) > 40) 
-            {
-                appliedTorque = 0;
-            }
-        }
+        
+
+        print($" {_currentGear}, {_logn_speed}, {appliedTorque}, {GearRatio(_currentGear)}");
 
         foreach (var wheel in wheels) 
         {
@@ -138,21 +131,23 @@ public class Car : MonoBehaviour
     private int CurrentGear()
     {
         int gear = 0;
-        if (_logn_speed < 20)
+        if (_logn_speed >= -40 && _logn_speed <20)
             gear = 0;
         else if (_logn_speed >= 20 && _logn_speed < 40)
             gear = 1;
-        else if (_logn_speed >= 40 && _logn_speed <= 70)
+        else if (_logn_speed >= 40 && _logn_speed < 60)
             gear = 2;
-        else if (_logn_speed >= 70)
+        else if (_logn_speed >= 60 && _logn_speed < 90)
             gear = 3;
+        else
+            gear = 4;
 
         return gear;
     }
 
-    private float CurrentGearRatio()
+    private float GearRatio(int gear)
     {
-        return _transmissionRatios[_currentGear];
+        return _transmissionRatios[gear];
     }
 
     private void Update()
