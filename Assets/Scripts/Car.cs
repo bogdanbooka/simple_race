@@ -9,9 +9,8 @@ public class Car : MonoBehaviour
 
     public float motorTorque = 80f;
 
-    static float[] _transmissionRatios = new float[] { 4, 2, 1.2f, 0.9f, 0.0f };
-
     int _currentGear = 0;
+    float _gearRatio = 0;
 
     public int Gear
     {
@@ -77,7 +76,7 @@ public class Car : MonoBehaviour
     {
         _logn_speed = Vector3.Dot(gameObject.transform.forward.normalized, _rigidbody.velocity.normalized) * _rigidbody.velocity.magnitude * 3.6f;
 
-        _currentGear = CurrentGear();
+        UpdateTransmission();
 
         Steer = GameManager.Instance.InputController.SteerInput;
         Throttle = GameManager.Instance.InputController.ThrottleInput;
@@ -100,7 +99,7 @@ public class Car : MonoBehaviour
             ackeackermannRight = 0f;
         }
 
-        float appliedTorque = Throttle * motorTorque * GearRatio(_currentGear);
+        float appliedTorque = Throttle * motorTorque * _gearRatio;
         
 
         if (Mathf.Sign(Throttle) * Mathf.Sign(_logn_speed) < 0)
@@ -115,7 +114,7 @@ public class Car : MonoBehaviour
         }
         
 
-        print($" {_currentGear}, {_logn_speed}, {appliedTorque}, {GearRatio(_currentGear)}");
+        print($" {_currentGear}, {_logn_speed}, {appliedTorque}, {_gearRatio}");
 
         foreach (var wheel in wheels) 
         {
@@ -128,26 +127,33 @@ public class Car : MonoBehaviour
         }
     }
 
-    private int CurrentGear()
+    private void UpdateTransmission()
     {
-        int gear = 0;
-        if (_logn_speed >= -40 && _logn_speed <20)
-            gear = 0;
+        if (_logn_speed >= -40 && _logn_speed < 20)
+        {
+            _currentGear = 1;
+            _gearRatio = 4;
+        }
         else if (_logn_speed >= 20 && _logn_speed < 40)
-            gear = 1;
+        {
+            _currentGear = 2;
+            _gearRatio = 2;
+        }
         else if (_logn_speed >= 40 && _logn_speed < 60)
-            gear = 2;
+        {
+            _currentGear = 3;
+            _gearRatio = 1.2f;
+        }
         else if (_logn_speed >= 60 && _logn_speed < 90)
-            gear = 3;
+        {
+            _currentGear = 4;
+            _gearRatio = 0.9f;
+        }
         else
-            gear = 4;
-
-        return gear;
-    }
-
-    private float GearRatio(int gear)
-    {
-        return _transmissionRatios[gear];
+        {
+            _currentGear = 0;
+            _gearRatio = 0;
+        }
     }
 
     private void Update()
