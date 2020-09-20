@@ -11,6 +11,7 @@ public class WheelSkid : MonoBehaviour
 
 
     WheelCollider wheelCollider;
+	Wheel wheel;
     WheelHit wheelHitInfo;
 
     const float SKID_FX_SPEED = 5f; // Min side slip speed in m/s to start showing a skid
@@ -19,10 +20,11 @@ public class WheelSkid : MonoBehaviour
     int lastSkid = -1; // Array index for the skidmarks controller. Index of last skidmark piece this wheel used
     float lastFixedUpdateTime;
 
-    protected void Awake()
+	protected void Awake()
     {
         wheelCollider = GetComponent<WheelCollider>();
-        lastFixedUpdateTime = Time.time;
+		wheel = GetComponent<Wheel>();
+		lastFixedUpdateTime = Time.time;
     }
 
 	protected void LateUpdate()
@@ -41,6 +43,9 @@ public class WheelSkid : MonoBehaviour
 			float carForwardVel = Vector3.Dot(rb.velocity, transform.forward);
 			float wheelSpin = Mathf.Abs(carForwardVel - wheelAngularVelocity) * WHEEL_SLIP_MULTIPLIER;
 
+
+			wheel.WheelIsSlipping = wheelAngularVelocity - carForwardVel > 10;
+
 			//Debug.Log($"[fwd {carForwardVel}] - [bckwd {wheelAngularVelocity}] = [{wheelSpin}]");
 
 			// NOTE: This extra line should not be needed and you can take it out if you have decent wheel physics
@@ -50,13 +55,9 @@ public class WheelSkid : MonoBehaviour
 
 			skidTotal += wheelSpin;
 
-			
-
 			// Skid if we should
 			if (skidTotal >= SKID_FX_SPEED)
 			{
-
-
 				float intensity = Mathf.Clamp01(skidTotal / MAX_SKID_INTENSITY);
 				//Debug.Log($"[skidTotal = {skidTotal}] [intensity {intensity}]");
 				
@@ -72,6 +73,8 @@ public class WheelSkid : MonoBehaviour
 		else
 		{
 			lastSkid = -1;
+
+			wheel.WheelIsSlipping = true;
 		}
 	}
 

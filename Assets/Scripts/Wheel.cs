@@ -17,6 +17,7 @@ public class Wheel : MonoBehaviour
     private WheelCollider wheelCollider;
     private Transform wheelTransform;
 
+    public bool WheelIsSlipping { get; set; }
 
     // Start is called before the first frame update
     void Start()

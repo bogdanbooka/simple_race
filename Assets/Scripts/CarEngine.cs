@@ -26,12 +26,9 @@ public class CarEngine : MonoBehaviour
         {
             soundPitch = 0.5f;
         }
-        else if (car.LongSpeed < 0)
+        else
         {
-            soundPitch = Mathf.Abs(car.Throttle) * PitchModifier + 0.5f;
-        }
-        else {
-            soundPitch = Mathf.Abs(car.Throttle) * PitchModifier + 0.5f;
+            soundPitch = Mathf.Abs(car.EngineRpm) * PitchModifier + 0.5f;
         }
 
 

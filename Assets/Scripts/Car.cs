@@ -20,6 +20,16 @@ public class Car : MonoBehaviour
         }
     }
 
+    float _engineRpm;
+    public float EngineRpm 
+    {
+        get 
+        {
+            return _engineRpm; 
+        } 
+    }
+
+
     public float maxSteer = 20f;
 
     public float Throttle { get; set; }
@@ -34,6 +44,8 @@ public class Car : MonoBehaviour
             return _logn_speed;
         }  
     }
+
+    public bool AnyWheelIsSlipping { get; private set; }
 
     private Rigidbody _rigidbody;
 
@@ -116,6 +128,8 @@ public class Car : MonoBehaviour
 
         print($" {_currentGear}, {_logn_speed}, {appliedTorque}, {_gearRatio}");
 
+        bool anyWheelIsSlipping = false;
+
         foreach (var wheel in wheels) 
         {
             wheel.SteerAngle = wheel.isLeft ? ackeackermannLeft : ackeackermannRight;
@@ -124,35 +138,74 @@ public class Car : MonoBehaviour
             wheel.Torque = appliedTorque;
 
             wheel.Brake = Brake;
+
+            anyWheelIsSlipping |= wheel.WheelIsSlipping;
         }
+
+        AnyWheelIsSlipping = anyWheelIsSlipping;
+
+        if (AnyWheelIsSlipping) 
+        {
+            _engineRpm = Mathf.Abs(Throttle);
+        }
+    }
+
+    private float GetRpm(float minSpeed, float maxSpeed) 
+    {
+        float absSpeed = Mathf.Abs(_logn_speed);
+        if (absSpeed <= minSpeed) 
+        {
+            return Throttle;
+        }
+
+        if (absSpeed >= maxSpeed) {
+            return Throttle;
+        }
+
+        float val = (absSpeed - minSpeed) / (maxSpeed - minSpeed);
+
+        return val > Mathf.Abs(Throttle) ? Throttle : val;
     }
 
     private void UpdateTransmission()
     {
-        if (_logn_speed >= -40 && _logn_speed < 20)
+        if (_logn_speed >= -40 && _logn_speed < 0 ||
+            _logn_speed >= 0 && _logn_speed < 20)
         {
             _currentGear = 1;
             _gearRatio = 4;
+            if (_logn_speed >= -40 && _logn_speed < 0) 
+            {
+                _engineRpm = GetRpm(0,40);
+            }
+            else 
+            {
+                _engineRpm = GetRpm(0, 20);
+            }
         }
         else if (_logn_speed >= 20 && _logn_speed < 40)
         {
             _currentGear = 2;
             _gearRatio = 2;
+            _engineRpm = GetRpm(20, 40);
         }
         else if (_logn_speed >= 40 && _logn_speed < 60)
         {
             _currentGear = 3;
             _gearRatio = 1.2f;
+            _engineRpm = GetRpm(40, 60);
         }
         else if (_logn_speed >= 60 && _logn_speed < 90)
         {
             _currentGear = 4;
             _gearRatio = 0.9f;
+            _engineRpm = GetRpm(60, 90);
         }
         else
         {
             _currentGear = 0;
             _gearRatio = 0;
+            _engineRpm = Throttle;
         }
     }
 
