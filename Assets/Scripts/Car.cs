@@ -126,7 +126,7 @@ public class Car : MonoBehaviour
         }
         
 
-        print($" {_currentGear}, {_logn_speed}, {appliedTorque}, {_gearRatio}");
+        //print($" {_currentGear}, {_logn_speed}, {appliedTorque}, {_gearRatio}");
 
         bool anyWheelIsSlipping = false;
 
@@ -144,7 +144,7 @@ public class Car : MonoBehaviour
 
         AnyWheelIsSlipping = anyWheelIsSlipping;
 
-        if (AnyWheelIsSlipping) 
+        if (anyWheelIsSlipping) 
         {
             _engineRpm = Mathf.Abs(Throttle);
         }
