@@ -11,6 +11,8 @@ public class EnvironmentSoundController : MonoBehaviour
     void Start()
     {
         audioSrc = GetComponent<AudioSource>();
+
+        audioSrc.pitch = Random.Range(1, 1.3f);
     }
 
     private void OnTriggerEnter(Collider other)
