@@ -1053,7 +1053,7 @@ Transform:
   m_GameObject: {fileID: 8048914935414657610}
   m_LocalRotation: {x: 0, y: 0.73416257, z: 0, w: 0.67897373}
   m_LocalPosition: {x: 71.702545, y: -0.50504315, z: -51.331524}
-  m_LocalScale: {x: 1.5132941, y: 1.6948146, z: 1.5132941}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7815564186296893541}
   - {fileID: 999234456}
@@ -1116,8 +1116,8 @@ Rigidbody:
   m_GameObject: {fileID: 8048914935414657610}
   serializedVersion: 2
   m_Mass: 2000
-  m_Drag: 0.8
-  m_AngularDrag: 0.7
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -1134,7 +1134,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: -0.3, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 1.0255313, y: -0.605414, z: 1.8482058}
+  m_ConnectedAnchor: {x: 0.036038995, y: -0.39696962, z: 0.47219765}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 0
@@ -1151,25 +1151,25 @@ ConfigurableJoint:
     bounciness: 0
     contactDistance: 0
   m_AngularXLimitSpring:
-    spring: 100000
-    damper: 5000
+    spring: 0
+    damper: 0
   m_LowAngularXLimit:
-    limit: -1
+    limit: -45
     bounciness: 0
     contactDistance: 0
   m_HighAngularXLimit:
-    limit: 1
+    limit: 45
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
-    spring: 100000
-    damper: 5000
+    spring: 0
+    damper: 0
   m_AngularYLimit:
     limit: 0
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 3
+    limit: 45
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -1194,13 +1194,13 @@ ConfigurableJoint:
   m_RotationDriveMode: 0
   m_AngularXDrive:
     serializedVersion: 3
-    positionSpring: 0
-    positionDamper: 0
+    positionSpring: 500000
+    positionDamper: 50000
     maximumForce: 3.4028233e+38
   m_AngularYZDrive:
     serializedVersion: 3
-    positionSpring: 0
-    positionDamper: 0
+    positionSpring: 500000
+    positionDamper: 50000
     maximumForce: 3.4028233e+38
   m_SlerpDrive:
     serializedVersion: 3
