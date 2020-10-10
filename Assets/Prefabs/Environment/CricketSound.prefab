@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5759688965554615866}
   - component: {fileID: 5759688965554615867}
   - component: {fileID: 5759688965554615864}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CricketSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
