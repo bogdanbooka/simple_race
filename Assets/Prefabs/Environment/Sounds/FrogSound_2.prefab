@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5759688965554615866}
   - component: {fileID: 5759688965554615867}
   - component: {fileID: 5759688965554615864}
+  - component: {fileID: -7575489637123151907}
   m_Layer: 11
   m_Name: FrogSound_2
   m_TagString: Untagged
@@ -155,3 +156,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-7575489637123151907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5759688965554615865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdcf89b39f0b3444285be0a375286dec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showGizmos: 0
+  color: {r: 0.015686274, g: 0.63715464, b: 1, a: 1}
