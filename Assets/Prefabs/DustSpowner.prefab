@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e1bf151a30daa4592d742ba85df80a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentTransform: {fileID: 0}
+  parentTransform: {fileID: 4747366641929069176}
   prefabs:
   - {fileID: 495840738948857929, guid: 50cd88da1b14bb146a853358787f51be, type: 3}
 --- !u!1001 &366673754279773152
