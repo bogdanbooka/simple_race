@@ -48,7 +48,7 @@ public class MapGenerator : MonoBehaviour
                 if (cellIndex >= cells.Length) {
                     continue;
                 }
-                GameObject prefab_instance = PrefabUtility.InstantiatePrefab(cells[GetCellState(i, j)], origin) as GameObject;
+                GameObject prefab_instance = Instantiate(cells[GetCellState(i, j)], origin) as GameObject;
                 prefab_instance.transform.position = new Vector3(-i*200, 0,-j*200);
             }
         }
