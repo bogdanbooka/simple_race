@@ -89,7 +89,7 @@ public class ObjectCreatorEditor : Editor
 
         RaycastHit hitInfo;
 
-        if (myScript.gameObject.scene.GetPhysicsScene().Raycast(worldRay.origin, worldRay.direction, out hitInfo, 10000))
+        if (myScript.gameObject.scene.GetPhysicsScene().Raycast(worldRay.origin, worldRay.direction, out hitInfo, 10000, LayerMask.GetMask("Default")))
         {
             GameObject prefab_instance = PrefabUtility.InstantiatePrefab(myScript.prefabs[prefabIndex]) as GameObject;
             prefab_instance.transform.position = hitInfo.point;

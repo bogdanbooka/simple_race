@@ -54,7 +54,7 @@ public class ObjectSpowner : EditorWindow
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, 1000, LayerMask.GetMask("Default")))
         {
 
             if (Input.GetKey(KeyCode.Mouse0))
